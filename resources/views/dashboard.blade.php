@@ -20,31 +20,31 @@
                         Kelola customer
                     </a>
                 </li>
-                {{-- <li>
+                <li>
                     <a href="{{ route('kelola.transaksiPembelian') }}" class="block py-2 px-4 rounded text-gray-800 dark:text-gray-200 hover:bg-gray-300 dark:hover:bg-gray-700">
                         Kelola Transaksi Pembelian
                     </a>
-                </li> --}}
-                {{-- <li>
+                </li>
+                <li>
                     <a href="{{ route('kelola.stok') }}" class="block py-2 px-4 rounded text-gray-800 dark:text-gray-200 hover:bg-gray-300 dark:hover:bg-gray-700">
                         Kelola Stok
                     </a>
-                </li> --}}
-                {{-- <li>
-                    <a href="{{ route('kelola.transaksiPenjualan') }}" class="block py-2 px-4 rounded text-gray-800 dark:text-gray-200 hover:bg-gray-300 dark:hover:bg-gray-700">
-                        Kelola Transaksi Penjualan
-                    </a>
-                </li> --}}
-                {{-- <li>
+                </li>
+                                <li>
                     <a href="{{ route('kelola.supplier') }}" class="block py-2 px-4 rounded text-gray-800 dark:text-gray-200 hover:bg-gray-300 dark:hover:bg-gray-700">
                         Kelola Supplier
                     </a>
-                </li> --}}
-                {{-- <li>
+                </li>
+                <li>
+                    <a href="{{ route('kelola.transaksiPenjualan') }}" class="block py-2 px-4 rounded text-gray-800 dark:text-gray-200 hover:bg-gray-300 dark:hover:bg-gray-700">
+                        Kelola Transaksi Penjualan
+                    </a>
+                </li>
+                <li>
                     <a href="{{ route('kelola.laporan') }}" class="block py-2 px-4 rounded text-gray-800 dark:text-gray-200 hover:bg-gray-300 dark:hover:bg-gray-700">
                         Kelola Laporan
                     </a>
-                </li> --}}
+                </li>
             </ul>
         </div>
 

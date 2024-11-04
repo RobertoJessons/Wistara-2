@@ -5,6 +5,11 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProdukController;
 use App\Models\Customer;
+use App\Http\Controllers\TransaksiPembelianController;
+use App\Http\Controllers\StokController;
+use App\Http\Controllers\SupplierController;
+use App\Http\Controllers\TransaksiPenjualanController;
+use App\Http\Controllers\LaporanController;
 
 /*
 |--------------------------------------------------------------------------
@@ -37,11 +42,11 @@ route::get('/login',function () {
 
 Route::get('/kelola-produk', [ProdukController::class, 'index'])->name('kelola.produk');
 Route::get('/kelola-customer', [CustomerController::class, 'index'])->name('kelola.customer');
-// Route::get('/kelola-transaksi-pembelian', [TransaksiPembelianController::class, 'index'])->name('kelola.transaksiPembelian');
-// Route::get('/kelola-stok', [StokController::class, 'index'])->name('kelola.stok');
-// Route::get('/kelola-transaksi-penjualan', [TransaksiPenjualanController::class, 'index'])->name('kelola.transaksiPenjualan');
-// Route::get('/kelola-supplier', [SupplierController::class, 'index'])->name('kelola.supplier');
-// Route::get('/kelola-laporan', [LaporanController::class, 'index'])->name('kelola.laporan');
+Route::get('/kelola-transaksi-pembelian', [TransaksiPembelianController::class, 'index'])->name('kelola.transaksiPembelian');
+Route::get('/kelola-stok', [StokController::class, 'index'])->name('kelola.stok');
+Route::get('/kelola-supplier', [SupplierController::class, 'index'])->name('kelola.supplier');
+Route::get('/kelola-transaksi-penjualan', [TransaksiPenjualanController::class, 'index'])->name('kelola.transaksiPenjualan');
+Route::get('/kelola-laporan', [LaporanController::class, 'index'])->name('kelola.laporan');
 
 
 require __DIR__.'/auth.php';
