@@ -13,6 +13,8 @@ use App\Http\Controllers\LaporanController;
 use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\UserController;
+use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\Auth\AuthenticatedSessionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -32,6 +34,16 @@ Route::get('/', function () {
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
+
+// Route dengan akses penuh untuk Owner dan Supervisor
+Route::get('/kelola-laporan', function () {
+    if (Auth::user() && (Auth::user()->role->nama_role === 'admin')) {
+        return app(LaporanController::class)->index();
+    }
+    return redirect('/dashboard')->with('error', 'Anda tidak memiliki akses ke halaman ini.');
+})->middleware('auth')->name('kelola-laporan.index');
+
+
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -53,6 +65,8 @@ Route::get('/kelola-laporan', [LaporanController::class, 'index'])->name('kelola
 Route::get('/dashboard', function() {
     return view('dashboard');
 })->name('dashboard');
+
+Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
 
 
 require __DIR__.'/auth.php';

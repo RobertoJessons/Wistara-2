@@ -18,7 +18,7 @@
 
         <div class="mt-4">
             <x-input-label for="role" :value="__('Role')" />
-            <select id="role" name="role" class="block mt-1 w-full" required>
+            <select id="role" name="role" class="block mt-1 w-full" required>r
                 <option value="user" {{ old('role') == 'user' ? 'selected' : '' }}>User</option>
                 <option value="admin" {{ old('role') == 'admin' ? 'selected' : '' }}>Admin</option>
             </select>
