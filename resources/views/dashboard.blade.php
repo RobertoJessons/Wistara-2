@@ -5,19 +5,19 @@
         </h2>
     </x-slot>
 
-    <div class="flex">
+    {{-- <div class="flex">
         <!-- Sidebar -->
         <div class="w-64 h-screen bg-gray-200 dark:bg-gray-900 p-5">
-            <h3 class="font-semibold text-lg text-gray-800 dark:text-gray-200 mb-4">Kelola</h3>
+            <h3 class="font-semibold text-lg text-gray-800 dark:text-gray-200 mb-4">Wistara</h3>
             <ul class="space-y-2">
                 <li>
                     <a href="{{ route('kelola.produk') }}" class="block py-2 px-4 rounded text-gray-800 dark:text-gray-200 hover:bg-gray-300 dark:hover:bg-gray-700">
-                        Kelola Produk   
+                        Kelola Produk
                     </a>
                 </li>
                 <li>
                     <a href="{{ route('kelola.customer') }}" class="block py-2 px-4 rounded text-gray-800 dark:text-gray-200 hover:bg-gray-300 dark:hover:bg-gray-700">
-                        Kelola customer
+                        Kelola Customer
                     </a>
                 </li>
                 <li>
@@ -30,7 +30,7 @@
                         Kelola Stok
                     </a>
                 </li>
-                                <li>
+                <li>
                     <a href="{{ route('kelola.supplier') }}" class="block py-2 px-4 rounded text-gray-800 dark:text-gray-200 hover:bg-gray-300 dark:hover:bg-gray-700">
                         Kelola Supplier
                     </a>
@@ -46,7 +46,7 @@
                     </a>
                 </li>
             </ul>
-        </div>
+        </div> --}}
 
         <!-- Main Content -->
         <div class="flex-1 py-12">

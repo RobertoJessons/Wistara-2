@@ -10,6 +10,9 @@ use App\Http\Controllers\StokController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\TransaksiPenjualanController;
 use App\Http\Controllers\LaporanController;
+use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -47,6 +50,9 @@ Route::get('/kelola-stok', [StokController::class, 'index'])->name('kelola.stok'
 Route::get('/kelola-supplier', [SupplierController::class, 'index'])->name('kelola.supplier');
 Route::get('/kelola-transaksi-penjualan', [TransaksiPenjualanController::class, 'index'])->name('kelola.transaksiPenjualan');
 Route::get('/kelola-laporan', [LaporanController::class, 'index'])->name('kelola.laporan');
+Route::get('/dashboard', function() {
+    return view('dashboard');
+})->name('dashboard');
 
 
 require __DIR__.'/auth.php';

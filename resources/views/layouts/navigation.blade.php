@@ -16,6 +16,41 @@
                         {{ __('Dashboard') }}
                     </x-nav-link>
                 </div>
+                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                    <x-nav-link :href="route('kelola.produk')" :active="request()->routeIs('kelola.produk')">
+                        {{ __('Produk') }}
+                    </x-nav-link>
+                </div>
+                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                    <x-nav-link :href="route('kelola.customer')" :active="request()->routeIs('kelola.customer')">
+                        {{ __('Customer') }}
+                    </x-nav-link>
+                </div>
+                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                    <x-nav-link :href="route('kelola.transaksiPembelian')" :active="request()->routeIs('kelola.transaksiPembelian')">
+                        {{ __('Transaksi Pembelian') }}
+                    </x-nav-link>
+                </div>
+                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                    <x-nav-link :href="route('kelola.stok')" :active="request()->routeIs('kelola.stok')">
+                        {{ __('Stok') }}
+                    </x-nav-link>
+                </div>
+                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                    <x-nav-link :href="route('kelola.supplier')" :active="request()->routeIs('kelola.supplier')">
+                        {{ __('Supplier') }}
+                    </x-nav-link>
+                </div>
+                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                    <x-nav-link :href="route('kelola.transaksiPenjualan')" :active="request()->routeIs('kelola.transaksiPenjualan')">
+                        {{ __('Transaksi Penjualan') }}
+                    </x-nav-link>
+                </div>
+                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                    <x-nav-link :href="route('kelola.laporan')" :active="request()->routeIs('kelola.laporan')">
+                        {{ __('Laporan') }}
+                    </x-nav-link>
+                </div>
             </div>
 
             <!-- Settings Dropdown -->
