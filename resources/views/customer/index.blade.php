@@ -3,230 +3,72 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Data Laporan Pengeluaran</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <style>
-        body {
-            font-family: 'Poppins', sans-serif;
-            margin: 0;
-            display: flex;
-            min-height: 100vh;
-        }
-
-        /* Styling Sidebar */
-        .sidebar {
-            width: 250px;
-            background-color: #1e3a8a;
-            color: #fff;
-            padding: 20px 0;
-            flex-shrink: 0;
-        }
-
-        .sidebar-header {
-            text-align: center;
-            font-size: 24px;
-            font-weight: bold;
-            color: #ffffff;
-            margin-bottom: 30px;
-        }
-
-        .sidebar-header h2 {
-            font-family: 'Comic Sans MS', cursive, sans-serif; /* Comic Sans MS for SANGUKU */
-            font-size: 30px;
-            font-weight: bold;
-            color: #ffffff;
-            text-align: center;
-            margin-bottom: 30px;
-        }
-
-        .sidebar-menu {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-
-        .sidebar-menu li {
-            margin-bottom: 15px;
-        }
-
-        .sidebar-menu a,
-        .sidebar-menu button {
-            display: flex;
-            align-items: center;
-            color: #ffffff;
-            text-decoration: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            font-size: 16px;
-            background: none;
-            border: none;
-            font-family: 'Poppins', sans-serif;
-            cursor: pointer;
-            width: 100%;
-            text-align: left;
-            box-sizing: border-box;
-        }
-
-        .sidebar-menu a i,
-        .sidebar-menu form button i {
-            margin-right: 10px;
-        }
-
-        .sidebar-menu a.active,
-        .sidebar-menu a:hover,
-        .sidebar-menu form button:hover {
-            background-color: #3b82f6;
-        }
-
-        /* Styling Content */
-        .content {
-            flex-grow: 1;
-            padding: 20px;
-            background-color: #DEEFFE;
-        }
-
-        .content h1 {
-            font-size: 28px;
-            font-weight: bold;
-            color: #1e3a8a;
-            display: inline-block;
-        }
-
-        .add-button {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            background-color: #3b82f6;
-            color: #fff;
-            padding: 10px 20px;
-            border-radius: 5px;
-            text-decoration: none;
-            font-size: 16px;
-        }
-
-        /* Search Form */
-        .search-form {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin: 20px 0;
-        }
-
-        .search-form input[type="text"] {
-            padding: 12px;
-            width: 100%;
-            max-width: 1200px;
-            border: 2px solid #000000;
-            border-radius: 25px;
-            padding-left: 45px;
-            font-size: 16px;
-            background-image: url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/svgs/solid/search.svg');
-            background-size: 20px;
-            background-position: 15px center;
-            background-repeat: no-repeat;
-        }
-
-        /* Table Styling */
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-            background-color: #ffffff;
-            border-radius: 15px;
-            overflow: hidden;
-            box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.15);
-            border: 5px solid #3b82f6;
-        }
-
-        th,
-        td {
-            padding: 15px;
-            text-align: center;
-            border: 1px solid #ddd;
-        }
-
-        th {
-            background-color: #1e3a8a;
-            color: #fff;
-        }
-
-        .action-icons a {
-            color: #1e3a8a;
-            margin: 0 5px;
-            font-size: 18px;
-            text-decoration: none;
-        }
-
-        .action-icons a:hover {
-            color: #3b82f6;
-        }
-    </style>
+    <title>Data Customer</title>
+    <!-- Include Tailwind CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
-<body>
-    <!-- Sidebar -->
-    <div class="sidebar">
-        <div class="sidebar-header">
-            <h2>WISTARA</h2>
+<body class="bg-gray-100 dark:bg-gray-900">
+
+<x-app-layout>
+    <x-slot name="header">
+        <div class="flex items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" style="margin-right: 0.75rem;" class="h-9 w-auto fill-current text-gray-800 dark:text-gray-200" viewBox="0 0 640 512">
+                <path d="M96 64c0-17.7 14.3-32 32-32l320 0 64 0c70.7 0 128 57.3 128 128s-57.3 128-128 128l-32 0c0 53-43 96-96 96l-192 0c-53 0-96-43-96-96L96 64zM480 224l32 0c35.3 0 64-28.7 64-64s-28.7-64-64-64l-32 0 0 128zM32 416l512 0c17.7 0 32 14.3 32 32s-14.3 32-32 32L32 480c-17.7 0-32-14.3-32-32s14.3-32 32-32z"/>
+            </svg>
+            <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
+                {{ __('Customer') }}
+            </h2>
         </div>
-        <ul class="sidebar-menu">
-            <li><a href="/dashboard"><i class="fas fa-home"></i> Beranda</a></li>
-            <li>
-                @if (auth()->user()->role->nama_role === 'Owner' || auth()->user()->role->nama_role === 'Supervisor')
-                    <a href="/pengguna"><i class="fas fa-users"></i> Kelola Pengguna</a>
-                @endif
-            </li>
-            <li><a href="/kelola-transaksi-penjualan"><i class="fas fa-exchange-alt"></i> Kelola Transaksi Penjualan</a></li>
-            <li><a href="/kelola-supplier"><i class="fas fa-file-alt"></i> Kelola Supplier</a></li>
-            <li><a href="/kelola-transaksi-pembelian"><i class="fas fa-wallet"></i> Kelola Transaksi Pembelian</a></li>
-            <li><a href="/kelola-produk"><i class="fas fa-utensils"></i> Kelola Menu</a></li>
-            <li><a href="/kelola-stok"><i class="fas fa-file-alt"></i> Kelola Stok</a></li>
-            <li><a href="/kelola-customer"class="active" ><i class="fas fa-user-friends"></i> Customer</a></li>
-            <li>
-                @if (auth()->user()->role->nama_role === 'admin')
-                    <a href="/kelola-laporan"><i class="fas fa-file-alt"></i> Kelola Laporan </a>
-                @endif
-            </li>
-                <!-- Logout Button -->
-                <form action="{{ route('logout') }}" method="POST" style="width: 100%;">
-                    @csrf
-                    <button type="submit">
-                        <i class="fas fa-power-off"></i> Logout
-                    </button>
-                </form>
-            </li>
-        </ul>
-    </div>
-    </div>
-</body>
-</html>
+    </x-slot>
 
+    <div class="flex-1 p-6">
+        <!-- Judul Halaman dan Tombol Tambah -->
+        <div class="flex justify-between items-center mb-4">
+            <h1 class="text-2xl font-semibold text-gray-800 dark:text-gray-200">Data Customer</h1>
+            <a href="{{ route('customer.create') }}" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">
+                Tambah Customer Baru
+            </a>
+        </div>
 
+        <!-- Pesan Sukses -->
+        @if (session('success'))
+            <div class="mb-4 p-4 bg-green-200 text-green-800 rounded">
+                {{ session('success') }}
+            </div>
+        @endif
 
-        <!-- Main Content -->
-        <div class="flex-1 p-6">
-            <h1 class="text-2xl font-semibold text-gray-800 dark:text-gray-200 mb-4">Kelola Customer</h1>
-            <table class="min-w-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700">
-                <thead>
+        <!-- Tabel Data Customer -->
+        <table class="min-w-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700">
+            <thead>
+                <tr>
+                    <th class="py-2 px-4 border-b border-gray-300 dark:border-gray-700 text-left text-gray-800 dark:text-gray-200">No</th>
+                    <th class="py-2 px-4 border-b border-gray-300 dark:border-gray-700 text-left text-gray-800 dark:text-gray-200">Nomor Telepon</th>
+                    <th class="py-2 px-4 border-b border-gray-300 dark:border-gray-700 text-left text-gray-800 dark:text-gray-200">Nama Customer</th>
+                    <th class="py-2 px-4 border-b border-gray-300 dark:border-gray-700 text-left text-gray-800 dark:text-gray-200">Poin</th>
+                    <th class="py-2 px-4 border-b border-gray-300 dark:border-gray-700 text-left text-gray-800 dark:text-gray-200">Aksi</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach($customers as $customer)
                     <tr>
-                        <th class="py-2 px-4 border-b border-gray-300 dark:border-gray-700 text-left text-gray-800 dark:text-gray-200">Nomor Telepon</th>
-                        <th class="py-2 px-4 border-b border-gray-300 dark:border-gray-700 text-left text-gray-800 dark:text-gray-200">Nama Customer</th>
-                        <th class="py-2 px-4 border-b border-gray-300 dark:border-gray-700 text-left text-gray-800 dark:text-gray-200">Poin</th>
-                        <th class="py-2 px-4 border-b border-gray-300 dark:border-gray-700 text-left text-gray-800 dark:text-gray-200">Tanggal Mendaftar</th>
+                        <td class="py-2 px-4 border-b border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300">{{ $loop->iteration }}</td>
+                        <td class="py-2 px-4 border-b border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300">{{ $customer->nomor_telepon }}</td>
+                        <td class="py-2 px-4 border-b border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300">{{ $customer->nama_customer }}</td>
+                        <td class="py-2 px-4 border-b border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300">{{ $customer->poin }}</td>
+                        <td class="py-2 px-4 border-b border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300">
+                            <a href="{{ route('customer.edit', $customer->id_customer) }}" class="text-blue-600 dark:text-blue-400">Edit</a>
+                            <form action="{{ route('customer.destroy', $customer->id_customer) }}" method="POST" style="display:inline;" onsubmit="return confirm('Apakah Anda yakin ingin menghapus data ini?');">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="text-red-600 dark:text-red-400 ml-2">Hapus</button>
+                            </form>
+                        </td>
                     </tr>
-                </thead>
-                <tbody>
-                    @foreach($customer as $customer)
-                        <tr>
-                            <td class="py-2 px-4 border-b border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300">{{ $customer->nomor_telepon }}</td>
-                            <td class="py-2 px-4 border-b border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300">{{ $customer->nama_customer }}</td>
-                            <td class="py-2 px-4 border-b border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300">{{ $customer->poin }}</td>
-                            <td class="py-2 px-4 border-b border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300">{{ $customer->tanggal_mendaftar }}</td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
-        </div>
+                @endforeach
+            </tbody>
+        </table>
     </div>
+</x-app-layout>
+
 </body>
 </html>

@@ -43,8 +43,6 @@ Route::get('/kelola-laporan', function () {
     return redirect('/dashboard')->with('error', 'Anda tidak memiliki akses ke halaman ini.');
 })->middleware('auth')->name('kelola-laporan.index');
 
-
-
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
@@ -55,8 +53,11 @@ route::get('/login',function () {
     return view('auth.login');
 })->middleware(['auth', 'verified'])->name('login');
 
+// CRUD Routes for Customer
+Route::resource('customer', CustomerController::class);
+
+// Other routes
 Route::get('/kelola-produk', [ProdukController::class, 'index'])->name('kelola.produk');
-Route::get('/kelola-customer', [CustomerController::class, 'index'])->name('kelola.customer');
 Route::get('/kelola-transaksi-pembelian', [TransaksiPembelianController::class, 'index'])->name('kelola.transaksiPembelian');
 Route::get('/kelola-stok', [StokController::class, 'index'])->name('kelola.stok');
 Route::get('/kelola-supplier', [SupplierController::class, 'index'])->name('kelola.supplier');
@@ -67,6 +68,5 @@ Route::get('/dashboard', function() {
 })->name('dashboard');
 
 Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
-
 
 require __DIR__.'/auth.php';

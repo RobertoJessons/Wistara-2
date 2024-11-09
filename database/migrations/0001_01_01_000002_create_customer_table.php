@@ -12,15 +12,16 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('customer', function (Blueprint $table) {
-            $table->string('nomor_telepon')->primary()->unique();
+            $table->id('id_customer'); // Tambahkan kolom id_customer sebagai primary key
+            $table->string('nomor_telepon')->unique(); // nomor_telepon tetap unik tetapi bukan primary key
             $table->string('nama_customer')->unique();
             $table->timestamp('nomor_telepon_verified_at')->nullable();
             $table->string('password');
             $table->integer('poin');
             $table->string('tanggal_mendaftar');
+            $table->timestamp('created_at')->nullable();
+            $table->timestamp('updated_at')->nullable();
         });
-
-
     }
 
     /**

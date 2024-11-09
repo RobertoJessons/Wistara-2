@@ -3,235 +3,56 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Data Laporan Pengeluaran</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <style>
-        body {
-            font-family: 'Poppins', sans-serif;
-            margin: 0;
-            display: flex;
-            min-height: 100vh;
-        }
-
-        /* Styling Sidebar */
-        .sidebar {
-            width: 250px;
-            background-color: #1e3a8a;
-            color: #fff;
-            padding: 20px 0;
-            flex-shrink: 0;
-        }
-
-        .sidebar-header {
-            text-align: center;
-            font-size: 24px;
-            font-weight: bold;
-            color: #ffffff;
-            margin-bottom: 30px;
-        }
-
-        .sidebar-header h2 {
-            font-family: 'Comic Sans MS', cursive, sans-serif; /* Comic Sans MS for SANGUKU */
-            font-size: 30px;
-            font-weight: bold;
-            color: #ffffff;
-            text-align: center;
-            margin-bottom: 30px;
-        }
-
-        .sidebar-menu {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-
-        .sidebar-menu li {
-            margin-bottom: 15px;
-        }
-
-        .sidebar-menu a,
-        .sidebar-menu button {
-            display: flex;
-            align-items: center;
-            color: #ffffff;
-            text-decoration: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            font-size: 16px;
-            background: none;
-            border: none;
-            font-family: 'Poppins', sans-serif;
-            cursor: pointer;
-            width: 100%;
-            text-align: left;
-            box-sizing: border-box;
-        }
-
-        .sidebar-menu a i,
-        .sidebar-menu form button i {
-            margin-right: 10px;
-        }
-
-        .sidebar-menu a.active,
-        .sidebar-menu a:hover,
-        .sidebar-menu form button:hover {
-            background-color: #3b82f6;
-        }
-
-        /* Styling Content */
-        .content {
-            flex-grow: 1;
-            padding: 20px;
-            background-color: #DEEFFE;
-        }
-
-        .content h1 {
-            font-size: 28px;
-            font-weight: bold;
-            color: #1e3a8a;
-            display: inline-block;
-        }
-
-        .add-button {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            background-color: #3b82f6;
-            color: #fff;
-            padding: 10px 20px;
-            border-radius: 5px;
-            text-decoration: none;
-            font-size: 16px;
-        }
-
-        /* Search Form */
-        .search-form {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin: 20px 0;
-        }
-
-        .search-form input[type="text"] {
-            padding: 12px;
-            width: 100%;
-            max-width: 1200px;
-            border: 2px solid #000000;
-            border-radius: 25px;
-            padding-left: 45px;
-            font-size: 16px;
-            background-image: url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/svgs/solid/search.svg');
-            background-size: 20px;
-            background-position: 15px center;
-            background-repeat: no-repeat;
-        }
-
-        /* Table Styling */
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-            background-color: #ffffff;
-            border-radius: 15px;
-            overflow: hidden;
-            box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.15);
-            border: 5px solid #3b82f6;
-        }
-
-        th,
-        td {
-            padding: 15px;
-            text-align: center;
-            border: 1px solid #ddd;
-        }
-
-        th {
-            background-color: #1e3a8a;
-            color: #fff;
-        }
-
-        .action-icons a {
-            color: #1e3a8a;
-            margin: 0 5px;
-            font-size: 18px;
-            text-decoration: none;
-        }
-
-        .action-icons a:hover {
-            color: #3b82f6;
-        }
-    </style>
+    <title>Data Pembelian</title>
+    <!-- Include Tailwind CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
-<body>
-    <!-- Sidebar -->
-    <div class="sidebar">
-        <div class="sidebar-header">
-            <h2>WISTARA</h2>
-        </div>
-        <ul class="sidebar-menu">
-            <li><a href="/dashboard"><i class="fas fa-home"></i> Beranda</a></li>
-            <li>
-                @if (auth()->user()->role->nama_role === 'Owner' || auth()->user()->role->nama_role === 'Supervisor')
-                    <a href="/pengguna"><i class="fas fa-users"></i> Kelola Pengguna</a>
-                @endif
-            </li>
-            <li><a href="/kelola-transaksi-penjualan"><i class="fas fa-exchange-alt"></i> Kelola Transaksi Penjualan</a></li>
-            <li><a href="/kelola-supplier"><i class="fas fa-file-alt"></i> Kelola Supplier</a></li>
-            <li><a href="/kelola-transaksi-pembelian"class="active"><i class="fas fa-wallet"></i> Kelola Transaksi Pembelian</a></li>
-            <li><a href="/kelola-produk"><i class="fas fa-utensils"></i> Kelola Menu</a></li>
-            <li><a href="/kelola-stok"><i class="fas fa-file-alt"></i> Kelola Stok</a></li>
-            <li><a href="/kelola-customer" ><i class="fas fa-user-friends"></i> Customer</a></li>
-            <li>
-                @if (auth()->user()->role->nama_role === 'admin')
-                    <a href="/kelola-laporan"><i class="fas fa-file-alt"></i> Kelola Laporan </a>
-                @endif
-            </li>
-                <!-- Logout Button -->
-                <form action="{{ route('logout') }}" method="POST" style="width: 100%;">
-                    @csrf
-                    <button type="submit">
-                        <i class="fas fa-power-off"></i> Logout
-                    </button>
-                </form>
-            </li>
-        </ul>
-    </div>
-    </div>
-</body>
-</html>
-
-        <!-- Main Content -->
-        <div class="flex-1 p-6">
-            <h1 class="text-2xl font-semibold text-gray-800 dark:text-gray-200 mb-4">Transaksi Pembelian</h1>
-            <table class="min-w-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700">
-                <thead>
-                    <tr>
-                        <th class="py-2 px-4 border-b border-gray-300 dark:border-gray-700 text-left text-gray-800 dark:text-gray-200">ID Transaksi Pembelian</th>
-                        <th class="py-2 px-4 border-b border-gray-300 dark:border-gray-700 text-left text-gray-800 dark:text-gray-200">Tanggal Pembelian</th>
-                        <th class="py-2 px-4 border-b border-gray-300 dark:border-gray-700 text-left text-gray-800 dark:text-gray-200">Nama Supplier</th>
-                        <th class="py-2 px-4 border-b border-gray-300 dark:border-gray-700 text-left text-gray-800 dark:text-gray-200">Nama Stok</th>
-                        <th class="py-2 px-4 border-b border-gray-300 dark:border-gray-700 text-left text-gray-800 dark:text-gray-200">Jumlah Stok</th>
-                        <th class="py-2 px-4 border-b border-gray-300 dark:border-gray-700 text-left text-gray-800 dark:text-gray-200">Harga Pembelian</th>
-                        <th class="py-2 px-4 border-b border-gray-300 dark:border-gray-700 text-left text-gray-800 dark:text-gray-200">Total Pembelian</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach($transaksi_pembelian as $item)
+<body class="bg-gray-100 dark:bg-gray-900">
+<!-- Header -->
+    <x-app-layout>
+        <x-slot name="header">
+            <div class="flex items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" style="margin-right: 0.75rem;" class="h-9 w-auto fill-current text-gray-800 dark:text-gray-200" viewBox="0 0 576 512">
+                <path d="M0 24C0 10.7 10.7 0 24 0L69.5 0c22 0 41.5 12.8 50.6 32l411 0c26.3 0 45.5 25 38.6 50.4l-41 152.3c-8.5 31.4-37 53.3-69.5 53.3l-288.5 0 5.4 28.5c2.2 11.3 12.1 19.5 23.6 19.5L488 336c13.3 0 24 10.7 24 24s-10.7 24-24 24l-288.3 0c-34.6 0-64.3-24.6-70.7-58.5L77.4 54.5c-.7-3.8-4-6.5-7.9-6.5L24 48C10.7 48 0 37.3 0 24zM128 464a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zm336-48a48 48 0 1 1 0 96 48 48 0 1 1 0-96z"/>
+            </svg>
+            <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
+                {{ __('Transaksi Pembelian') }}
+            </h2>
+            </div>
+        </x-slot>
+            <!-- Main Content -->
+            <div class="flex-1 p-6">
+                <h1 class="text-2xl font-semibold text-gray-800 dark:text-gray-200 mb-4">Data Transaksi Pembelian</h1>
+                <table class="min-w-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700">
+                    <thead>
                         <tr>
-                            <td class="py-2 px-4 border-b border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300">{{ $item->id_transaksi_pembelian }}</td>
-                            <td class="py-2 px-4 border-b border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300">{{ $item->tanggal_pembelian }}</td>
-                            <td class="py-2 px-4 border-b border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300">{{ $item->nama_supplier }}</td>
-                            <td class="py-2 px-4 border-b border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300">{{ $item->nama_stok }}</td>
-                            <td class="py-2 px-4 border-b border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300">{{ $item->jumlah_stok }}</td>
-                            <td class="py-2 px-4 border-b border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300">{{ $item->harga_stok }}</td>
-                            <td class="py-2 px-4 border-b border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300">{{ $item->total_pembelian }}</td>
+                            <th class="py-2 px-4 border-b border-gray-300 dark:border-gray-700 text-left text-gray-800 dark:text-gray-200">id Transaksi Pembelian</th>
+                            <th class="py-2 px-4 border-b border-gray-300 dark:border-gray-700 text-left text-gray-800 dark:text-gray-200">Tanggal Pembelian</th>
+                            <th class="py-2 px-4 border-b border-gray-300 dark:border-gray-700 text-left text-gray-800 dark:text-gray-200">Nama Supplier</th>
+                            <th class="py-2 px-4 border-b border-gray-300 dark:border-gray-700 text-left text-gray-800 dark:text-gray-200">Nama Stok</th>
+                            <th class="py-2 px-4 border-b border-gray-300 dark:border-gray-700 text-left text-gray-800 dark:text-gray-200">Jumlah Stok</th>
+                            <th class="py-2 px-4 border-b border-gray-300 dark:border-gray-700 text-left text-gray-800 dark:text-gray-200">Harga Stok</th>
+                            <th class="py-2 px-4 border-b border-gray-300 dark:border-gray-700 text-left text-gray-800 dark:text-gray-200">Total Pembelian</th>
                         </tr>
-                    @endforeach
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        @foreach($transaksi_pembelian as $transaksi_pembelian)
+                            <tr>
+                                <td class="py-2 px-4 border-b border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300">{{ $transaksi_pembelian->id_transaksi_pembelian }}</td>
+                                <td class="py-2 px-4 border-b border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300">{{ $transaksi_pembelian->tanggal_pembelian }}</td>
+                                <td class="py-2 px-4 border-b border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300">{{ $transaksi_pembelian->nama_supplier }}</td>
+                                <td class="py-2 px-4 border-b border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300">{{ $transaksi_pembelian->nama_stok }}</td>
+                                <td class="py-2 px-4 border-b border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300">{{ $transaksi_pembelian->jumlah_stok }}</td>
+                                <td class="py-2 px-4 border-b border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300">{{ $transaksi_pembelian->harga_stok }}</td>
+                                <td class="py-2 px-4 border-b border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300">{{ $transaksi_pembelian->total_pembelian }}</td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
         </div>
-    </div>
 
+    </x-app-layout>
+    
 </body>
 </html>

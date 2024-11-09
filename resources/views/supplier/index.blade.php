@@ -3,229 +3,50 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Data Laporan Pengeluaran</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <style>
-        body {
-            font-family: 'Poppins', sans-serif;
-            margin: 0;
-            display: flex;
-            min-height: 100vh;
-        }
-
-        /* Styling Sidebar */
-        .sidebar {
-            width: 250px;
-            background-color: #1e3a8a;
-            color: #fff;
-            padding: 20px 0;
-            flex-shrink: 0;
-        }
-
-        .sidebar-header {
-            text-align: center;
-            font-size: 24px;
-            font-weight: bold;
-            color: #ffffff;
-            margin-bottom: 30px;
-        }
-
-        .sidebar-header h2 {
-            font-family: 'Comic Sans MS', cursive, sans-serif; /* Comic Sans MS for SANGUKU */
-            font-size: 30px;
-            font-weight: bold;
-            color: #ffffff;
-            text-align: center;
-            margin-bottom: 30px;
-        }
-
-        .sidebar-menu {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-
-        .sidebar-menu li {
-            margin-bottom: 15px;
-        }
-
-        .sidebar-menu a,
-        .sidebar-menu button {
-            display: flex;
-            align-items: center;
-            color: #ffffff;
-            text-decoration: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            font-size: 16px;
-            background: none;
-            border: none;
-            font-family: 'Poppins', sans-serif;
-            cursor: pointer;
-            width: 100%;
-            text-align: left;
-            box-sizing: border-box;
-        }
-
-        .sidebar-menu a i,
-        .sidebar-menu form button i {
-            margin-right: 10px;
-        }
-
-        .sidebar-menu a.active,
-        .sidebar-menu a:hover,
-        .sidebar-menu form button:hover {
-            background-color: #3b82f6;
-        }
-
-        /* Styling Content */
-        .content {
-            flex-grow: 1;
-            padding: 20px;
-            background-color: #DEEFFE;
-        }
-
-        .content h1 {
-            font-size: 28px;
-            font-weight: bold;
-            color: #1e3a8a;
-            display: inline-block;
-        }
-
-        .add-button {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            background-color: #3b82f6;
-            color: #fff;
-            padding: 10px 20px;
-            border-radius: 5px;
-            text-decoration: none;
-            font-size: 16px;
-        }
-
-        /* Search Form */
-        .search-form {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin: 20px 0;
-        }
-
-        .search-form input[type="text"] {
-            padding: 12px;
-            width: 100%;
-            max-width: 1200px;
-            border: 2px solid #000000;
-            border-radius: 25px;
-            padding-left: 45px;
-            font-size: 16px;
-            background-image: url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/svgs/solid/search.svg');
-            background-size: 20px;
-            background-position: 15px center;
-            background-repeat: no-repeat;
-        }
-
-        /* Table Styling */
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-            background-color: #ffffff;
-            border-radius: 15px;
-            overflow: hidden;
-            box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.15);
-            border: 5px solid #3b82f6;
-        }
-
-        th,
-        td {
-            padding: 15px;
-            text-align: center;
-            border: 1px solid #ddd;
-        }
-
-        th {
-            background-color: #1e3a8a;
-            color: #fff;
-        }
-
-        .action-icons a {
-            color: #1e3a8a;
-            margin: 0 5px;
-            font-size: 18px;
-            text-decoration: none;
-        }
-
-        .action-icons a:hover {
-            color: #3b82f6;
-        }
-    </style>
+    <title>Data Supplier</title>
+    <!-- Include Tailwind CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
-<body>
-    <!-- Sidebar -->
-    <div class="sidebar">
-        <div class="sidebar-header">
-            <h2>WISTARA</h2>
-        </div>
-        <ul class="sidebar-menu">
-            <li><a href="/dashboard"><i class="fas fa-home"></i> Beranda</a></li>
-            <li>
-                @if (auth()->user()->role->nama_role === 'Owner' || auth()->user()->role->nama_role === 'Supervisor')
-                    <a href="/pengguna"><i class="fas fa-users"></i> Kelola Pengguna</a>
-                @endif
-            </li>
-            <li><a href="/kelola-transaksi-penjualan"><i class="fas fa-exchange-alt"></i> Kelola Transaksi Penjualan</a></li>
-            <li><a href="/kelola-supplier"class="active"><i class="fas fa-file-alt"></i> Kelola Supplier</a></li>
-            <li><a href="/kelola-transaksi-pembelian"><i class="fas fa-wallet"></i> Kelola Transaksi Pembelian</a></li>
-            <li><a href="/kelola-produk"><i class="fas fa-utensils"></i> Kelola Menu</a></li>
-            <li><a href="/kelola-stok"><i class="fas fa-file-alt"></i> Kelola Stok</a></li>
-            <li><a href="/kelola-customer" ><i class="fas fa-user-friends"></i> Customer</a></li>
-            <li>
-                @if (auth()->user()->role->nama_role === 'admin')
-                    <a href="/kelola-laporan"><i class="fas fa-file-alt"></i> Kelola Laporan </a>
-                @endif
-            </li>
-                <!-- Logout Button -->
-                <form action="{{ route('logout') }}" method="POST" style="width: 100%;">
-                    @csrf
-                    <button type="submit">
-                        <i class="fas fa-power-off"></i> Logout
-                    </button>
-                </form>
-            </li>
-        </ul>
-    </div>
-    </div>
-</body>
-</html>
-
-        <!-- Main Content -->
-        <div class="flex-1 p-6">
-            <h1 class="text-2xl font-semibold text-gray-800 dark:text-gray-200 mb-4">Supplier</h1>
-            <table class="min-w-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700">
-                <thead>
-                    <tr>
-                        <th class="py-2 px-4 border-b border-gray-300 dark:border-gray-700 text-left text-gray-800 dark:text-gray-200">ID Supplier</th>
-                        <th class="py-2 px-4 border-b border-gray-300 dark:border-gray-700 text-left text-gray-800 dark:text-gray-200">Nama Supplier</th>
-                        <th class="py-2 px-4 border-b border-gray-300 dark:border-gray-700 text-left text-gray-800 dark:text-gray-200">Alamat</th>
-                        <th class="py-2 px-4 border-b border-gray-300 dark:border-gray-700 text-left text-gray-800 dark:text-gray-200">Nomor Telepon</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach($supplier as $item)
+<body class="bg-gray-100 dark:bg-gray-900">
+<!-- Header -->
+    <x-app-layout>
+        <x-slot name="header">
+            <div class="flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" style="margin-right: 0.75rem;" class="h-9 w-auto fill-current text-gray-800 dark:text-gray-200" viewBox="0 0 640 512">
+                    <path d="M272.2 64.6l-51.1 51.1c-15.3 4.2-29.5 11.9-41.5 22.5L153 161.9C142.8 171 129.5 176 115.8 176L96 176l0 128c20.4 .6 39.8 8.9 54.3 23.4l35.6 35.6 7 7c0 0 0 0 0 0L219.9 397c6.2 6.2 16.4 6.2 22.6 0c1.7-1.7 3-3.7 3.7-5.8c2.8-7.7 9.3-13.5 17.3-15.3s16.4 .6 22.2 6.5L296.5 393c11.6 11.6 30.4 11.6 41.9 0c5.4-5.4 8.3-12.3 8.6-19.4c.4-8.8 5.6-16.6 13.6-20.4s17.3-3 24.4 2.1c9.4 6.7 22.5 5.8 30.9-2.6c9.4-9.4 9.4-24.6 0-33.9L340.1 243l-35.8 33c-27.3 25.2-69.2 25.6-97 .9c-31.7-28.2-32.4-77.4-1.6-106.5l70.1-66.2C303.2 78.4 339.4 64 377.1 64c36.1 0 71 13.3 97.9 37.2L505.1 128l38.9 0 40 0 40 0c8.8 0 16 7.2 16 16l0 208c0 17.7-14.3 32-32 32l-32 0c-11.8 0-22.2-6.4-27.7-16l-84.9 0c-3.4 6.7-7.9 13.1-13.5 18.7c-17.1 17.1-40.8 23.8-63 20.1c-3.6 7.3-8.5 14.1-14.6 20.2c-27.3 27.3-70 30-100.4 8.1c-25.1 20.8-62.5 19.5-86-4.1L159 404l-7-7-35.6-35.6c-5.5-5.5-12.7-8.7-20.4-9.3C96 369.7 81.6 384 64 384l-32 0c-17.7 0-32-14.3-32-32L0 144c0-8.8 7.2-16 16-16l40 0 40 0 19.8 0c2 0 3.9-.7 5.3-2l26.5-23.6C175.5 77.7 211.4 64 248.7 64L259 64c4.4 0 8.9 .2 13.2 .6zM544 320l0-144-48 0c-5.9 0-11.6-2.2-15.9-6.1l-36.9-32.8c-18.2-16.2-41.7-25.1-66.1-25.1c-25.4 0-49.8 9.7-68.3 27.1l-70.1 66.2c-10.3 9.8-10.1 26.3 .5 35.7c9.3 8.3 23.4 8.1 32.5-.3l71.9-66.4c9.7-9 24.9-8.4 33.9 1.4s8.4 24.9-1.4 33.9l-.8 .8 74.4 74.4c10 10 16.5 22.3 19.4 35.1l74.8 0zM64 336a16 16 0 1 0 -32 0 16 16 0 1 0 32 0zm528 16a16 16 0 1 0 0-32 16 16 0 1 0 0 32z"/>
+                </svg>
+            <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
+                {{ __('Supplier') }}
+            </h2>
+            </div>
+        </x-slot>
+            <!-- Main Content -->
+            <div class="flex-1 p-6">
+                <h1 class="text-2xl font-semibold text-gray-800 dark:text-gray-200 mb-4">Data Supplier</h1>
+                <table class="min-w-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700">
+                    <thead>
                         <tr>
-                            <td class="py-2 px-4 border-b border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300">{{ $item->id_supplier }}</td>
-                            <td class="py-2 px-4 border-b border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300">{{ $item->nama_supplier }}</td>
-                            <td class="py-2 px-4 border-b border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300">{{ $item->alamat }}</td>
-                            <td class="py-2 px-4 border-b border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300">{{ $item->nomor_telepon_supplier }}</td>
+                            <th class="py-2 px-4 border-b border-gray-300 dark:border-gray-700 text-left text-gray-800 dark:text-gray-200">id Supplier</th>
+                            <th class="py-2 px-4 border-b border-gray-300 dark:border-gray-700 text-left text-gray-800 dark:text-gray-200">Nama Supplier</th>
+                            <th class="py-2 px-4 border-b border-gray-300 dark:border-gray-700 text-left text-gray-800 dark:text-gray-200">Alamat</th>
+                            <th class="py-2 px-4 border-b border-gray-300 dark:border-gray-700 text-left text-gray-800 dark:text-gray-200">Nomor Telepon</th>
                         </tr>
-                    @endforeach
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        @foreach($supplier as $supplier)
+                            <tr>
+                                <td class="py-2 px-4 border-b border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300">{{ $supplier->id_supplier }}</td>
+                                <td class="py-2 px-4 border-b border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300">{{ $supplier->nama_supplier }}</td>
+                                <td class="py-2 px-4 border-b border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300">{{ $supplier->alamat }}</td>
+                                <td class="py-2 px-4 border-b border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300">{{ $supplier->nomor_telepon_supplier }}</td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
         </div>
-    </div>
 
+    </x-app-layout>
+    
 </body>
 </html>

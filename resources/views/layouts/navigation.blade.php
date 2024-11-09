@@ -22,7 +22,7 @@
                     </x-nav-link>
                 </div>
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link :href="route('kelola.customer')" :active="request()->routeIs('kelola.customer')">
+                    <x-nav-link :href="route('customer.index')" :active="request()->routeIs('customer.index')">
                         {{ __('Customer') }}
                     </x-nav-link>
                 </div>
@@ -52,7 +52,6 @@
                     </x-nav-link>
                 </div>
             </div>
-            
 
             <!-- Settings Dropdown -->
             <div class="hidden sm:flex sm:items-center sm:ms-6">
