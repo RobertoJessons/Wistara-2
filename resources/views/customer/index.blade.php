@@ -21,13 +21,24 @@
         </div>
     </x-slot>
 
-    <div class="flex-1 p-6">
+    <div class="flex-1 p-6 w-full">
         <!-- Judul Halaman dan Tombol Tambah -->
         <div class="flex justify-between items-center mb-4">
             <h1 class="text-2xl font-semibold text-gray-800 dark:text-gray-200">Data Customer</h1>
             <a href="{{ route('customer.create') }}" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">
                 Tambah Customer Baru
             </a>
+        </div>
+
+        <!-- Search Bar -->
+        <div class="mb-4">
+            <input 
+                type="text" 
+                id="searchInput" 
+                placeholder="Cari berdasarkan Nama atau Nomor Telepon..." 
+                class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-200 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-200"
+                onkeyup="filterTable()"
+            />
         </div>
 
         <!-- Pesan Sukses -->
@@ -38,7 +49,7 @@
         @endif
 
         <!-- Tabel Data Customer -->
-        <table class="min-w-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700">
+        <table id="customerTable" class="min-w-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700">
             <thead>
                 <tr>
                     <th class="py-2 px-4 border-b border-gray-300 dark:border-gray-700 text-left text-gray-800 dark:text-gray-200">No</th>
@@ -69,6 +80,30 @@
         </table>
     </div>
 </x-app-layout>
+
+<!-- Script for Filtering Table -->
+<script>
+    function filterTable() {
+        const input = document.getElementById('searchInput');
+        const filter = input.value.toLowerCase();
+        const table = document.getElementById('customerTable');
+        const rows = table.getElementsByTagName('tr');
+
+        for (let i = 1; i < rows.length; i++) {
+            const cells = rows[i].getElementsByTagName('td');
+            let match = false;
+
+            for (let j = 0; j < cells.length - 1; j++) { // Exclude the last column (actions)
+                if (cells[j] && cells[j].textContent.toLowerCase().includes(filter)) {
+                    match = true;
+                    break;
+                }
+            }
+
+            rows[i].style.display = match ? '' : 'none';
+        }
+    }
+</script>
 
 </body>
 </html>

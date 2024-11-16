@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,8 +8,9 @@
     <!-- Include Tailwind CSS -->
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
+
 <body class="bg-gray-100 dark:bg-gray-900">
-<!-- Header -->
+
     <x-app-layout>
         <x-slot name="header">
             <div class="flex items-center">
@@ -20,39 +22,86 @@
                 </h2>
             </div>
         </x-slot>
-            <!-- Main Content -->
-            <div class="flex-1 p-6">
-                <h1 class="text-2xl font-semibold text-gray-800 dark:text-gray-200 mb-4">Data Transaksi Penjualan</h1>
-                <table class="min-w-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700">
-                    <thead>
-                        <tr>
-                            <th class="py-2 px-4 border-b border-gray-300 dark:border-gray-700 text-left text-gray-800 dark:text-gray-200">Nomor Transaksi penjualan</th>
-                            <th class="py-2 px-4 border-b border-gray-300 dark:border-gray-700 text-left text-gray-800 dark:text-gray-200">Tanggal Transaksi</th>
-                            <th class="py-2 px-4 border-b border-gray-300 dark:border-gray-700 text-left text-gray-800 dark:text-gray-200">Nama Produk</th>
-                            <th class="py-2 px-4 border-b border-gray-300 dark:border-gray-700 text-left text-gray-800 dark:text-gray-200">Harga Produk</th>
-                            <th class="py-2 px-4 border-b border-gray-300 dark:border-gray-700 text-left text-gray-800 dark:text-gray-200">Jumlah Produk</th>
-                            <th class="py-2 px-4 border-b border-gray-300 dark:border-gray-700 text-left text-gray-800 dark:text-gray-200">Total Harga</th>
-                            <th class="py-2 px-4 border-b border-gray-300 dark:border-gray-700 text-left text-gray-800 dark:text-gray-200">Nama Customer</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach($transaksi_penjualan as $transaksi_penjualan)
-                            <tr>
-                                <td class="py-2 px-4 border-b border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300">{{ $transaksi_penjualan->nomor_transaksi_penjualan }}</td>
-                                <td class="py-2 px-4 border-b border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300">{{ $transaksi_penjualan->nama_produk }}</td>
-                                <td class="py-2 px-4 border-b border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300">{{ $transaksi_penjualan->jenis_produk }}</td>
-                                <td class="py-2 px-4 border-b border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300">{{ $transaksi_penjualan->harga }}</td>
-                                <td class="py-2 px-4 border-b border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300">{{ $transaksi_penjualan->jumlah_produk }}</td>
-                                <td class="py-2 px-4 border-b border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300">{{ $transaksi_penjualan->total_harga }}</td>
-                                <td class="py-2 px-4 border-b border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300">{{ $transaksi_penjualan->nama_customer }}</td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-            </div>
-        </div>
 
+        <div class="flex-1 p-6 w-full overflow-x-auto">
+            <div class="flex justify-between items-center mb-4">
+                <h1 class="text-2xl font-semibold text-gray-800 dark:text-gray-200">Data Transaksi Penjualan</h1>
+                <a href="{{ route('transaksiPenjualan.create') }}" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">Tambah Transaksi Baru</a>
+            </div>
+
+            <!-- Search Bar -->
+            <div class="mb-4">
+                <input type="text" id="searchInput" placeholder="Cari berdasarkan Nomor Transaksi, Nama Produk..." class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-200 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-200" onkeyup="filterTable()">
+            </div>
+
+            @if (session('success'))
+                <div class="mb-4 p-4 bg-green-200 text-green-800 rounded">
+                    {{ session('success') }}
+                </div>
+            @endif
+
+            <table class="min-w-full w-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700">
+                <thead>
+                    <tr>
+                        <th class="py-2 px-4 border-b border-gray-300 dark:border-gray-700 text-left text-gray-800 dark:text-gray-200">Nomor Transaksi Penjualan</th>
+                        <th class="py-2 px-4 border-b border-gray-300 dark:border-gray-700 text-left text-gray-800 dark:text-gray-200">Tanggal Transaksi</th>
+                        <th class="py-2 px-4 border-b border-gray-300 dark:border-gray-700 text-left text-gray-800 dark:text-gray-200">Nama Produk</th>
+                        <th class="py-2 px-4 border-b border-gray-300 dark:border-gray-700 text-left text-gray-800 dark:text-gray-200">Harga Produk</th>
+                        <th class="py-2 px-4 border-b border-gray-300 dark:border-gray-700 text-left text-gray-800 dark:text-gray-200">Jumlah Produk</th>
+                        <th class="py-2 px-4 border-b border-gray-300 dark:border-gray-700 text-left text-gray-800 dark:text-gray-200">Total Harga</th>
+                        <th class="py-2 px-4 border-b border-gray-300 dark:border-gray-700 text-left text-gray-800 dark:text-gray-200">Nama Customer</th>
+                        <th class="py-2 px-4 border-b border-gray-300 dark:border-gray-700 text-left text-gray-800 dark:text-gray-200">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach($transaksiPenjualan as $transaksi)
+                        <tr>
+                            <td class="py-2 px-4 border-b border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300">{{ $transaksi->nomor_transaksi_penjualan }}</td>
+                            <td class="py-2 px-4 border-b border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300">{{ $transaksi->tanggal_transaksi }}</td>
+                            <td class="py-2 px-4 border-b border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300">{{ $transaksi->nama_produk }}</td>
+                            <td class="py-2 px-4 border-b border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300">{{ $transaksi->harga }}</td>
+                            <td class="py-2 px-4 border-b border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300">{{ $transaksi->jumlah_produk }}</td>
+                            <td class="py-2 px-4 border-b border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300">{{ $transaksi->total_harga }}</td>
+                            <td class="py-2 px-4 border-b border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300">{{ $transaksi->customer->nama_customer }}</td>
+                            <td class="py-2 px-4 border-b border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300">
+                                <form action="{{ route('transaksiPenjualan.destroy', $transaksi->nomor_transaksi_penjualan) }}" method="POST" style="display:inline;" onsubmit="return confirm('Apakah Anda yakin ingin menghapus data ini?');">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="text-red-600 dark:text-red-400 ml-2">Hapus</button>
+                                </form>
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
     </x-app-layout>
-    
+
+    <!-- Script for Filtering Table -->
+    <script>
+        function filterTable() {
+            const input = document.getElementById('searchInput');
+            const filter = input.value.toLowerCase();
+            const table = document.querySelector('table');
+            const rows = table.getElementsByTagName('tr');
+
+            for (let i = 1; i < rows.length; i++) {
+                const cells = rows[i].getElementsByTagName('td');
+                let match = false;
+
+                // Loop through each cell except for the last column (actions)
+                for (let j = 0; j < cells.length - 1; j++) {
+                    if (cells[j] && cells[j].textContent.toLowerCase().includes(filter)) {
+                        match = true;
+                        break;
+                    }
+                }
+
+                rows[i].style.display = match ? '' : 'none';
+            }
+        }
+    </script>
+
 </body>
+
 </html>

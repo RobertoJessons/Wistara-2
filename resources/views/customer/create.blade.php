@@ -17,7 +17,7 @@
             @csrf
             <div class="mb-4">
                 <label class="block text-gray-700 dark:text-gray-300">Nomor Telepon:</label>
-                <input type="text" name="nomor_telepon" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md dark:bg-gray-900 dark:text-gray-300" required>
+                <input type="number" name="nomor_telepon" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md dark:bg-gray-900 dark:text-gray-300" required>
             </div>
             <div class="mb-4">
                 <label class="block text-gray-700 dark:text-gray-300">Nama Customer:</label>

@@ -17,7 +17,7 @@
                     </x-nav-link>
                 </div>
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link :href="route('kelola.produk')" :active="request()->routeIs('kelola.produk')">
+                    <x-nav-link :href="route('produk.index')" :active="request()->routeIs('produk.index')">
                         {{ __('Produk') }}
                     </x-nav-link>
                 </div>
@@ -27,27 +27,27 @@
                     </x-nav-link>
                 </div>
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link :href="route('kelola.transaksiPembelian')" :active="request()->routeIs('kelola.transaksiPembelian')">
+                    <x-nav-link :href="route('transaksiPembelian.index')" :active="request()->routeIs('transaksiPembelian.index')">
                         {{ __('Transaksi Pembelian') }}
                     </x-nav-link>
                 </div>
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link :href="route('kelola.stok')" :active="request()->routeIs('kelola.stok')">
+                    <x-nav-link :href="route('stok.index')" :active="request()->routeIs('stok.index')">
                         {{ __('Stok') }}
                     </x-nav-link>
                 </div>
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link :href="route('kelola.supplier')" :active="request()->routeIs('kelola.supplier')">
+                    <x-nav-link :href="route('supplier.index')" :active="request()->routeIs('supplier.index')">
                         {{ __('Supplier') }}
                     </x-nav-link>
                 </div>
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link :href="route('kelola.transaksiPenjualan')" :active="request()->routeIs('kelola.transaksiPenjualan')">
+                    <x-nav-link :href="route('transaksiPenjualan.index')" :active="request()->routeIs('TransaksiPenjualan.index')">
                         {{ __('Transaksi Penjualan') }}
                     </x-nav-link>
                 </div>
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link :href="route('kelola.laporan')" :active="request()->routeIs('kelola.laporan')">
+                    <x-nav-link :href="route('laporan.index')" :active="request()->routeIs('laporan.index')">
                         {{ __('Laporan') }}
                     </x-nav-link>
                 </div>

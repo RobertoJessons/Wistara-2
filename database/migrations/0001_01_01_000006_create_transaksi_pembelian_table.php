@@ -14,13 +14,14 @@ return new class extends Migration
         Schema::create('transaksi_pembelian', function (Blueprint $table) {
             $table->string('id_transaksi_pembelian')->primary();
             $table->timestamp('tanggal_pembelian');
-            $table->string('id_supplier')->unique();
-            $table->string('nama_supplier')->unique();
+            $table->string('id_supplier');
+            $table->string('nama_supplier');
             $table->string('nama_stok')->unique();
             $table->integer('jumlah_stok');
             $table->integer('harga_stok');
             $table->integer('total_pembelian');
             $table->foreign('id_supplier')->references('id_supplier')->on('supplier');
+            $table->softDeletes();
         });
     }
 

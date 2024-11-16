@@ -28,7 +28,7 @@ use App\Http\Controllers\Auth\AuthenticatedSessionController;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('auth.login');
 });
 
 Route::get('/dashboard', function () {
@@ -53,16 +53,16 @@ route::get('/login',function () {
     return view('auth.login');
 })->middleware(['auth', 'verified'])->name('login');
 
-// CRUD Routes for Customer
+// CRUD Routes
 Route::resource('customer', CustomerController::class);
+Route::resource('produk', ProdukController::class);
+Route::resource('stok', StokController::class);
+Route::resource('transaksiPembelian', TransaksiPembelianController::class);
+Route::resource('transaksiPenjualan', TransaksiPenjualanController::class);
+Route::resource('supplier', SupplierController::class);
+Route::resource('laporan', LaporanController::class);
 
 // Other routes
-Route::get('/kelola-produk', [ProdukController::class, 'index'])->name('kelola.produk');
-Route::get('/kelola-transaksi-pembelian', [TransaksiPembelianController::class, 'index'])->name('kelola.transaksiPembelian');
-Route::get('/kelola-stok', [StokController::class, 'index'])->name('kelola.stok');
-Route::get('/kelola-supplier', [SupplierController::class, 'index'])->name('kelola.supplier');
-Route::get('/kelola-transaksi-penjualan', [TransaksiPenjualanController::class, 'index'])->name('kelola.transaksiPenjualan');
-Route::get('/kelola-laporan', [LaporanController::class, 'index'])->name('kelola.laporan');
 Route::get('/dashboard', function() {
     return view('dashboard');
 })->name('dashboard');
