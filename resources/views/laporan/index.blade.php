@@ -25,23 +25,38 @@
         <div class="flex-1 p-6">
             <h1 class="text-2xl font-semibold text-gray-800 dark:text-gray-200 mb-4">Data Laporan</h1>
 
+            <!-- Pesan Error -->
+            @if(session('error'))
+                <div class="bg-red-500 text-white px-4 py-2 rounded mb-4">
+                    {{ session('error') }}
+                </div>
+            @endif
+
+            @if(session('warning'))
+                <div class="bg-yellow-500 text-white px-4 py-2 rounded mb-4">
+                    {{ session('warning') }}
+                </div>
+            @endif
+
             <!-- Form Filter -->
             <form method="GET" action="{{ route('laporan.index') }}" class="mb-4">
                 <label for="tanggal_awal" class="text-gray-700 dark:text-gray-300">Tanggal Awal:</label>
                 <input type="date" name="tanggal_awal" id="tanggal_awal" class="rounded border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-300" value="{{ request('tanggal_awal') }}">
-            
+                
                 <label for="tanggal_akhir" class="ml-2 text-gray-700 dark:text-gray-300">Tanggal Akhir:</label>
                 <input type="date" name="tanggal_akhir" id="tanggal_akhir" class="rounded border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-300" value="{{ request('tanggal_akhir') }}">
-            
+                
                 <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded">Terapkan</button>
-            </form>
             
+                <!-- Tombol Download -->
+                <button type="submit" formaction="{{ route('laporan.download') }}" class="px-4 py-2 bg-green-500 text-white rounded">Download</button>
+            </form>
 
             <!-- Tabel Laporan -->
             <table class="min-w-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700">
                 <thead>
                     <tr>
-                        <th class="py-2 px-4 border-b border-gray-300 dark:border-gray-700 text-left text-gray-800 dark:text-gray-200">Nomor Transaksi penjualan</th>
+                        <th class="py-2 px-4 border-b border-gray-300 dark:border-gray-700 text-left text-gray-800 dark:text-gray-200">Nomor Transaksi Penjualan</th>
                         <th class="py-2 px-4 border-b border-gray-300 dark:border-gray-700 text-left text-gray-800 dark:text-gray-200">Tanggal Transaksi</th>
                         <th class="py-2 px-4 border-b border-gray-300 dark:border-gray-700 text-left text-gray-800 dark:text-gray-200">Nama Produk</th>
                         <th class="py-2 px-4 border-b border-gray-300 dark:border-gray-700 text-left text-gray-800 dark:text-gray-200">Harga Produk</th>
@@ -51,7 +66,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach($transaksi_penjualan as $laporan)
+                    @forelse($transaksi_penjualan as $laporan)
                         <tr>
                             <td class="py-2 px-4 border-b border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300">{{ $laporan->nomor_transaksi_penjualan }}</td>
                             <td class="py-2 px-4 border-b border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300">{{ $laporan->tanggal_transaksi }}</td>
@@ -61,7 +76,11 @@
                             <td class="py-2 px-4 border-b border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300">{{ $laporan->total_harga }}</td>
                             <td class="py-2 px-4 border-b border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300">{{ $laporan->customer->nama_customer }}</td>
                         </tr>
-                    @endforeach
+                    @empty
+                        <tr>
+                            <td colspan="7" class="py-2 px-4 text-center text-gray-700 dark:text-gray-300">Tidak ada data laporan untuk ditampilkan.</td>
+                        </tr>
+                    @endforelse
                 </tbody>
             </table>
         </div>

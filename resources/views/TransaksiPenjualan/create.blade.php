@@ -11,11 +11,77 @@
         function updateCustomerId(selectElement) {
             const selectedOption = selectElement.options[selectElement.selectedIndex];
             const idCustomerInput = document.getElementById('id_customer');
+            const poinDisplay = document.getElementById('poin-customer');
+            const tukarPoinCheckbox = document.getElementById('tukar_poin_checkbox');
 
             // Mengupdate value id_customer berdasarkan pilihan
             idCustomerInput.value = selectedOption.getAttribute('data-id-customer') || '';
+            
+            // Menampilkan jumlah poin jika customer dipilih
+            const customerPoin = selectedOption.getAttribute('data-poin-customer') || 0;
+            poinDisplay.textContent = `Poin yang dimiliki: ${customerPoin}`;
+            
+            // Reset checkbox dan hidden poin saat customer dipilih
+            if (tukarPoinCheckbox.checked) {
+                tukarPoinCheckbox.checked = false;
+            }
         }
 
+        // Fungsi untuk menampilkan poin saat checkbox Tukar Poin dicentang
+        function togglePoinDisplay(checkbox) {
+            const poinDisplay = document.getElementById('poin-customer');
+            const poinCustomer = parseFloat(document.getElementById('nama_customer').selectedOptions[0].getAttribute('data-poin-customer')) || 0;
+            const totalHargaInput = document.querySelector('[name="total_harga[]"]');
+            const totalHarga = parseFloat(totalHargaInput.value) || 0;
+            
+            // Perhitungan poin untuk pengecekan cukup atau tidak
+            const poinDibutuhkan = totalHarga / 1000;
+            const poinWarning = document.getElementById('poin-warning');
+
+            if (checkbox.checked) {
+                // Tampilkan poin yang dimiliki
+                poinDisplay.style.display = 'block';
+                if (poinCustomer < poinDibutuhkan) {
+                    // Jika poin tidak cukup, tampilkan peringatan
+                    poinWarning.style.display = 'block';
+                    checkbox.checked = false; // Uncheck checkbox
+                } else {
+                    poinWarning.style.display = 'none';
+                }
+            } else {
+                poinDisplay.style.display = 'none';
+                poinWarning.style.display = 'none';
+            }
+        }
+
+        // Fungsi untuk menghitung total harga dan mengecek poin saat jumlah produk diinputkan
+        function calculateTotal(inputElement) {
+            const row = inputElement.parentElement;
+            const jumlahProduk = parseFloat(row.querySelector('[name="jumlah_produk[]"]').value) || 0;
+            const hargaProduk = parseFloat(row.querySelector('[name="harga[]"]').value) || 0;
+            const totalHargaInput = row.querySelector('[name="total_harga[]"]');
+            const totalHarga = jumlahProduk * hargaProduk;
+
+            totalHargaInput.value = totalHarga;
+
+            // Mengecek apakah poin cukup setelah input jumlah produk
+            const poinCustomer = parseFloat(document.getElementById('nama_customer').selectedOptions[0].getAttribute('data-poin-customer')) || 0;
+            const poinDibutuhkan = totalHarga / 1000;
+            const poinWarning = document.getElementById('poin-warning');
+            const tukarPoinCheckbox = document.getElementById('tukar_poin_checkbox');
+
+            if (tukarPoinCheckbox.checked) {
+                if (poinCustomer < poinDibutuhkan) {
+                    // Jika poin tidak cukup, tampilkan peringatan
+                    poinWarning.style.display = 'block';
+                    tukarPoinCheckbox.checked = false; // Uncheck checkbox
+                } else {
+                    poinWarning.style.display = 'none';
+                }
+            }
+        }
+
+        // Fungsi untuk menambahkan baris produk
         function addProductRow() {
             const productRows = document.getElementById('product-rows');
             const newRow = document.createElement('div');
@@ -39,6 +105,7 @@
             productRows.appendChild(newRow);
         }
 
+        // Fungsi untuk mengupdate produk yang dipilih
         function updateProductDetails(selectElement) {
             const selectedOption = selectElement.options[selectElement.selectedIndex];
             const namaProdukInput = selectElement.parentElement.querySelector('[name="nama_produk[]"]');
@@ -51,12 +118,23 @@
             calculateTotal(selectElement);
         }
 
-        function calculateTotal(inputElement) {
-            const row = inputElement.parentElement;
-            const jumlahProduk = parseFloat(row.querySelector('[name="jumlah_produk[]"]').value) || 0;
-            const hargaProduk = parseFloat(row.querySelector('[name="harga[]"]').value) || 0;
-            const totalHargaInput = row.querySelector('[name="total_harga[]"]');
-            totalHargaInput.value = jumlahProduk * hargaProduk;
+        // Fungsi untuk menghitung kembalian dan mengecek apakah jumlah bayar cukup
+        function calculateKembalian() {
+            const totalHarga = parseFloat(document.querySelector('[name="total_harga[]"]').value) || 0;
+            const jumlahBayar = parseFloat(document.getElementById('jumlah_bayar').value) || 0;
+            const kembalianInput = document.getElementById('kembalian');
+            const insufficientFundsMessage = document.getElementById('insufficient-funds');
+
+            // Hitung kembalian
+            const kembalian = jumlahBayar - totalHarga;
+            kembalianInput.value = kembalian >= 0 ? kembalian : 0; // Pastikan kembalian tidak negatif
+
+            // Cek apakah jumlah bayar cukup
+            if (jumlahBayar < totalHarga) {
+                insufficientFundsMessage.style.display = 'block';
+            } else {
+                insufficientFundsMessage.style.display = 'none';
+            }
         }
     </script>
 </head>
@@ -81,14 +159,25 @@
                 <select name="nama_customer" id="nama_customer" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md dark:bg-gray-900 dark:text-gray-300" required onchange="updateCustomerId(this)">
                     <option value="">Pilih Customer</option>
                     @foreach($customer as $cust)
-                        <option value="{{ $cust->id_customer }}" data-id-customer="{{ $cust->id_customer }}">
+                        <option value="{{ $cust->id_customer }}" data-id-customer="{{ $cust->id_customer }}" data-poin-customer="{{ $cust->poin }}">
                             {{ $cust->nama_customer }}
                         </option>
                     @endforeach
                 </select>
                 <!-- Input ID Customer yang tersembunyi -->
                 <input type="hidden" name="id_customer" id="id_customer">
+                
+                <!-- Checkbox Tukar Poin -->
+                <div class="mt-4">
+                    <label class="inline-flex items-center text-gray-700 dark:text-gray-300">
+                        <input type="checkbox" id="tukar_poin_checkbox" name="tukar_poin" value="1" onclick="togglePoinDisplay(this)">
+                        <span class="ml-2">Tukarkan Poin</span>
+                    </label>
+                    <p id="poin-customer" class="mt-2 text-gray-600 dark:text-gray-400" style="display:none;"></p>
+                    <p id="poin-warning" class="mt-2 text-red-500" style="display:none;">Poin tidak cukup untuk menutupi transaksi ini.</p>
+                </div>
             </div>
+
             <div id="product-rows" class="mb-4">
                 <!-- Baris Produk Pertama -->
                 <div class="flex space-x-4 mb-4 product-row">
@@ -107,6 +196,19 @@
                 </div>
             </div>
             <button type="button" onclick="addProductRow()" class="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 mb-4">Tambah Produk</button>
+
+            <!-- Kolom Pembayaran -->
+            {{-- <div class="mb-4">
+                <label class="block text-gray-700 dark:text-gray-300">Jumlah Bayar:</label>
+                <input type="number" id="jumlah_bayar" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md dark:bg-gray-900 dark:text-gray-300" oninput="calculateKembalian()" required>
+            </div>
+            <div class="mb-4">
+                <label class="block text-gray-700 dark:text-gray-300">Kembalian:</label>
+                <input type="number" id="kembalian" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md dark:bg-gray-900 dark:text-gray-300" readonly>
+            </div> --}}
+            
+            <p id="insufficient-funds" class="text-red-500" style="display:none;">Jumlah bayar tidak cukup untuk transaksi ini.</p>
+
             <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">Simpan</button>
         </form>
     </div>

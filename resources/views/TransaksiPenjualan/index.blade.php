@@ -26,7 +26,13 @@
         <div class="flex-1 p-6 w-full overflow-x-auto">
             <div class="flex justify-between items-center mb-4">
                 <h1 class="text-2xl font-semibold text-gray-800 dark:text-gray-200">Data Transaksi Penjualan</h1>
-                <a href="{{ route('transaksiPenjualan.create') }}" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">Tambah Transaksi Baru</a>
+                <div class="flex space-x-4">
+                    <!-- Button to Add Regular Transaction -->
+                    <a href="{{ route('transaksiPenjualan.create') }}" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">Tambah Transaksi Baru</a>
+
+                    <!-- Button to Add Transaction with Point Redemption -->
+                    <a href="{{ route('transaksiPenjualan.poin') }}" class="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600">Tambah Transaksi Poin</a>
+                </div>
             </div>
 
             <!-- Search Bar -->

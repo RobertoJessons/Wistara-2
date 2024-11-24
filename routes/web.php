@@ -17,9 +17,9 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 
 /*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
+|-------------------------------------------------------------------------- 
+| Web Routes 
+|-------------------------------------------------------------------------- 
 |
 | Here is where you can register web routes for your application. These
 | routes are loaded by the RouteServiceProvider and all of them will
@@ -28,7 +28,7 @@ use App\Http\Controllers\Auth\AuthenticatedSessionController;
 */
 
 Route::get('/', function () {
-    return view('auth.login');
+    return view('welcome');
 });
 
 Route::get('/dashboard', function () {
@@ -60,7 +60,11 @@ Route::resource('stok', StokController::class);
 Route::resource('transaksiPembelian', TransaksiPembelianController::class);
 Route::resource('transaksiPenjualan', TransaksiPenjualanController::class);
 Route::resource('supplier', SupplierController::class);
-Route::resource('laporan', LaporanController::class);
+Route::get('/laporan', [LaporanController::class, 'index'])->name('laporan.index');
+Route::get('/laporan/download', [LaporanController::class, 'download'])->name('laporan.download');
+// Rute untuk halaman penukaran poin
+Route::get('/transaksiPenjualan/poin', [TransaksiPenjualanController::class, 'poin'])->name('transaksiPenjualan.poin');
+
 
 // Other routes
 Route::get('/dashboard', function() {
