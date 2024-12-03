@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -16,11 +17,11 @@
 
             // Mengupdate value id_customer berdasarkan pilihan
             idCustomerInput.value = selectedOption.getAttribute('data-id-customer') || '';
-            
+
             // Menampilkan jumlah poin jika customer dipilih
             const customerPoin = selectedOption.getAttribute('data-poin-customer') || 0;
             poinDisplay.textContent = `Poin yang dimiliki: ${customerPoin}`;
-            
+
             // Reset checkbox dan hidden poin saat customer dipilih
             if (tukarPoinCheckbox.checked) {
                 tukarPoinCheckbox.checked = false;
@@ -30,10 +31,11 @@
         // Fungsi untuk menampilkan poin saat checkbox Tukar Poin dicentang
         function togglePoinDisplay(checkbox) {
             const poinDisplay = document.getElementById('poin-customer');
-            const poinCustomer = parseFloat(document.getElementById('nama_customer').selectedOptions[0].getAttribute('data-poin-customer')) || 0;
+            const poinCustomer = parseFloat(document.getElementById('nama_customer').selectedOptions[0].getAttribute(
+                'data-poin-customer')) || 0;
             const totalHargaInput = document.querySelector('[name="total_harga[]"]');
             const totalHarga = parseFloat(totalHargaInput.value) || 0;
-            
+
             // Perhitungan poin untuk pengecekan cukup atau tidak
             const poinDibutuhkan = totalHarga / 1000;
             const poinWarning = document.getElementById('poin-warning');
@@ -41,18 +43,27 @@
             if (checkbox.checked) {
                 // Tampilkan poin yang dimiliki
                 poinDisplay.style.display = 'block';
+                // Set nilai tukar_poin ke true
+                document.getElementById('tukar_poin').value = 'true';
+
                 if (poinCustomer < poinDibutuhkan) {
                     // Jika poin tidak cukup, tampilkan peringatan
                     poinWarning.style.display = 'block';
                     checkbox.checked = false; // Uncheck checkbox
+                    // Set nilai tukar_poin kembali ke false
+                    document.getElementById('tukar_poin').value = 'false';
                 } else {
                     poinWarning.style.display = 'none';
                 }
             } else {
+                // Jika checkbox tidak dicentang, sembunyikan poin
                 poinDisplay.style.display = 'none';
                 poinWarning.style.display = 'none';
+                // Set nilai tukar_poin ke false
+                document.getElementById('tukar_poin').value = 'false';
             }
         }
+
 
         // Fungsi untuk menghitung total harga dan mengecek poin saat jumlah produk diinputkan
         function calculateTotal(inputElement) {
@@ -65,7 +76,8 @@
             totalHargaInput.value = totalHarga;
 
             // Mengecek apakah poin cukup setelah input jumlah produk
-            const poinCustomer = parseFloat(document.getElementById('nama_customer').selectedOptions[0].getAttribute('data-poin-customer')) || 0;
+            const poinCustomer = parseFloat(document.getElementById('nama_customer').selectedOptions[0].getAttribute(
+                'data-poin-customer')) || 0;
             const poinDibutuhkan = totalHarga / 1000;
             const poinWarning = document.getElementById('poin-warning');
             const tukarPoinCheckbox = document.getElementById('tukar_poin_checkbox');
@@ -90,7 +102,7 @@
             newRow.innerHTML = `
                 <select name="id_produk[]" class="w-1/4 px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md dark:bg-gray-900 dark:text-gray-300" required onchange="updateProductDetails(this)">
                     <option value="">Pilih Produk</option>
-                    @foreach($produk as $item)
+                    @foreach ($produk as $item)
                         <option value="{{ $item->id_produk }}" data-nama-produk="{{ $item->nama_produk }}" data-harga-produk="{{ $item->harga }}">
                             {{ $item->id_produk }}
                         </option>
@@ -118,101 +130,108 @@
             calculateTotal(selectElement);
         }
 
-        // Fungsi untuk menghitung kembalian dan mengecek apakah jumlah bayar cukup
-        function calculateKembalian() {
-            const totalHarga = parseFloat(document.querySelector('[name="total_harga[]"]').value) || 0;
-            const jumlahBayar = parseFloat(document.getElementById('jumlah_bayar').value) || 0;
-            const kembalianInput = document.getElementById('kembalian');
-            const insufficientFundsMessage = document.getElementById('insufficient-funds');
-
-            // Hitung kembalian
-            const kembalian = jumlahBayar - totalHarga;
-            kembalianInput.value = kembalian >= 0 ? kembalian : 0; // Pastikan kembalian tidak negatif
-
-            // Cek apakah jumlah bayar cukup
-            if (jumlahBayar < totalHarga) {
-                insufficientFundsMessage.style.display = 'block';
-            } else {
-                insufficientFundsMessage.style.display = 'none';
-            }
+        // Fungsi untuk menangani pengiriman form dan memastikan nilai poin dikirim sesuai checkbox
+        function handleFormSubmit() {
+            const tukarPoinCheckbox = document.getElementById('tukar_poin_checkbox');
+            // Mengatur nilai poin sesuai dengan checkbox
+            document.getElementById('poin').value = tukarPoinCheckbox.checked ? true : false;
         }
     </script>
 </head>
+
 <body class="bg-gray-100 dark:bg-gray-900">
 
-<x-app-layout>
-    <div class="flex-1 p-6">
-        <h1 class="text-2xl font-semibold text-gray-800 dark:text-gray-200 mb-4">Tambah Transaksi Penjualan</h1>
+    <x-app-layout>
+        <div class="flex-1 p-6">
+            <h1 class="text-2xl font-semibold text-gray-800 dark:text-gray-200 mb-4">Tambah Transaksi Penjualan</h1>
 
-        <form action="{{ route('transaksiPenjualan.store') }}" method="POST" class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
-            @csrf
-            <div class="mb-4">
-                <label class="block text-gray-700 dark:text-gray-300">Nomor Transaksi Penjualan:</label>
-                <input type="text" name="nomor_transaksi_penjualan" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md dark:bg-gray-900 dark:text-gray-300" required>
-            </div>
-            <div class="mb-4">
-                <label class="block text-gray-700 dark:text-gray-300">Tanggal Transaksi:</label>
-                <input type="date" name="tanggal_transaksi" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md dark:bg-gray-900 dark:text-gray-300" required>
-            </div>
-            <div class="mb-4">
-                <label class="block text-gray-700 dark:text-gray-300">Customer:</label>
-                <select name="nama_customer" id="nama_customer" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md dark:bg-gray-900 dark:text-gray-300" required onchange="updateCustomerId(this)">
-                    <option value="">Pilih Customer</option>
-                    @foreach($customer as $cust)
-                        <option value="{{ $cust->id_customer }}" data-id-customer="{{ $cust->id_customer }}" data-poin-customer="{{ $cust->poin }}">
-                            {{ $cust->nama_customer }}
-                        </option>
-                    @endforeach
-                </select>
-                <!-- Input ID Customer yang tersembunyi -->
-                <input type="hidden" name="id_customer" id="id_customer">
-                
-                <!-- Checkbox Tukar Poin -->
-                <div class="mt-4">
-                    <label class="inline-flex items-center text-gray-700 dark:text-gray-300">
-                        <input type="checkbox" id="tukar_poin_checkbox" name="tukar_poin" value="1" onclick="togglePoinDisplay(this)">
-                        <span class="ml-2">Tukarkan Poin</span>
-                    </label>
-                    <p id="poin-customer" class="mt-2 text-gray-600 dark:text-gray-400" style="display:none;"></p>
-                    <p id="poin-warning" class="mt-2 text-red-500" style="display:none;">Poin tidak cukup untuk menutupi transaksi ini.</p>
+            <form action="{{ route('transaksiPenjualan.store') }}" method="POST"
+                class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md" onsubmit="handleFormSubmit()">
+                @csrf
+                <div class="mb-4">
+                    <label class="block text-gray-700 dark:text-gray-300">Nomor Transaksi Penjualan:</label>
+                    <input type="text" name="nomor_transaksi_penjualan"
+                        class="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md dark:bg-gray-900 dark:text-gray-300"
+                        required>
                 </div>
-            </div>
-
-            <div id="product-rows" class="mb-4">
-                <!-- Baris Produk Pertama -->
-                <div class="flex space-x-4 mb-4 product-row">
-                    <select name="id_produk[]" class="w-1/4 px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md dark:bg-gray-900 dark:text-gray-300" required onchange="updateProductDetails(this)">
-                        <option value="">Pilih Produk</option>
-                        @foreach($produk as $item)
-                            <option value="{{ $item->id_produk }}" data-nama-produk="{{ $item->nama_produk }}" data-harga-produk="{{ $item->harga }}">
-                                {{ $item->id_produk }}
+                <div class="mb-4">
+                    <label class="block text-gray-700 dark:text-gray-300">Tanggal Transaksi:</label>
+                    <input type="date" name="tanggal_transaksi"
+                        class="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md dark:bg-gray-900 dark:text-gray-300"
+                        required>
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700 dark:text-gray-300">Customer:</label>
+                    <select name="nama_customer" id="nama_customer"
+                        class="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md dark:bg-gray-900 dark:text-gray-300"
+                        required onchange="updateCustomerId(this)">
+                        <option value="">Pilih Customer</option>
+                        @foreach ($customer as $cust)
+                            <option value="{{ $cust->id_customer }}" data-id-customer="{{ $cust->id_customer }}"
+                                data-poin-customer="{{ $cust->poin }}">
+                                {{ $cust->nama_customer }}
                             </option>
                         @endforeach
                     </select>
-                    <input type="text" name="nama_produk[]" class="w-1/4 px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md dark:bg-gray-900 dark:text-gray-300" readonly>
-                    <input type="number" name="harga[]" class="w-1/4 px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md dark:bg-gray-900 dark:text-gray-300" readonly>
-                    <input type="number" name="jumlah_produk[]" class="w-1/4 px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md dark:bg-gray-900 dark:text-gray-300" oninput="calculateTotal(this)" required>
-                    <input type="number" name="total_harga[]" class="w-1/4 px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md dark:bg-gray-900 dark:text-gray-300" readonly>
+                    <!-- Input ID Customer yang tersembunyi -->
+                    <input type="hidden" name="id_customer" id="id_customer">
+
+                    <!-- Checkbox Tukar Poin -->
+                    <div class="mt-4">
+                        <label class="inline-flex items-center text-gray-700 dark:text-gray-300">
+                            <input type="checkbox" id="tukar_poin_checkbox" name="tukar_poin" value="1"
+                                onclick="togglePoinDisplay(this)">
+                            <span class="ml-2">Tukarkan Poin</span>
+                        </label>
+                        <p id="poin-customer" class="mt-2 text-gray-600 dark:text-gray-400" style="display:none;"></p>
+                        <p id="poin-warning" class="mt-2 text-red-500" style="display:none;">Poin tidak cukup untuk
+                            menutupi transaksi ini.</p>
+                    </div>
                 </div>
-            </div>
-            <button type="button" onclick="addProductRow()" class="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 mb-4">Tambah Produk</button>
 
-            <!-- Kolom Pembayaran -->
-            {{-- <div class="mb-4">
-                <label class="block text-gray-700 dark:text-gray-300">Jumlah Bayar:</label>
-                <input type="number" id="jumlah_bayar" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md dark:bg-gray-900 dark:text-gray-300" oninput="calculateKembalian()" required>
-            </div>
-            <div class="mb-4">
-                <label class="block text-gray-700 dark:text-gray-300">Kembalian:</label>
-                <input type="number" id="kembalian" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md dark:bg-gray-900 dark:text-gray-300" readonly>
-            </div> --}}
-            
-            <p id="insufficient-funds" class="text-red-500" style="display:none;">Jumlah bayar tidak cukup untuk transaksi ini.</p>
+                <div id="product-rows" class="mb-4">
+                    <!-- Baris Produk Pertama -->
+                    <div class="flex space-x-4 mb-4 product-row">
+                        <select name="id_produk[]"
+                            class="w-1/4 px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md dark:bg-gray-900 dark:text-gray-300"
+                            required onchange="updateProductDetails(this)">
+                            <option value="">Pilih Produk</option>
+                            @foreach ($produk as $item)
+                                <option value="{{ $item->id_produk }}" data-nama-produk="{{ $item->nama_produk }}"
+                                    data-harga-produk="{{ $item->harga }}">
+                                    {{ $item->id_produk }}
+                                </option>
+                            @endforeach
+                        </select>
+                        <input type="text" name="nama_produk[]"
+                            class="w-1/4 px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md dark:bg-gray-900 dark:text-gray-300"
+                            readonly>
+                        <input type="number" name="harga[]"
+                            class="w-1/4 px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md dark:bg-gray-900 dark:text-gray-300"
+                            readonly>
+                        <input type="number" name="jumlah_produk[]"
+                            class="w-1/4 px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md dark:bg-gray-900 dark:text-gray-300"
+                            oninput="calculateTotal(this)" required>
+                        <input type="number" name="total_harga[]"
+                            class="w-1/4 px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md dark:bg-gray-900 dark:text-gray-300"
+                            readonly>
+                    </div>
+                </div>
+                <button type="button" onclick="addProductRow()"
+                    class="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 mb-4">Tambah Produk</button>
 
-            <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">Simpan</button>
-        </form>
-    </div>
-</x-app-layout>
+                <p id="insufficient-funds" class="text-red-500" style="display:none;">Jumlah bayar tidak cukup untuk
+                    transaksi ini.</p>
+
+                <!-- Input tersembunyi untuk poin -->
+                <input type="hidden" name="poin" id="poin">
+
+                <button type="submit"
+                    class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">Simpan</button>
+            </form>
+        </div>
+    </x-app-layout>
 
 </body>
+
 </html>

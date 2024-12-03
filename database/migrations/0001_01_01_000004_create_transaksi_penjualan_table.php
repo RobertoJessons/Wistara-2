@@ -22,7 +22,7 @@ return new class extends Migration
             $table->integer('jumlah_produk');
             $table->integer('total_harga');
             $table->string('id_customer'); 
-            // $table->string('nama_customer');
+            $table->boolean('tukar_poin')->default(false);
             $table->foreign('id_produk')->references('id_produk')->on('produk');
             $table->foreign('id_customer')->references('id_customer')->on('customer');
         });

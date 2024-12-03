@@ -19,7 +19,7 @@ class TransaksiPenjualanSeeder extends Seeder
                 'jumlah_produk' => 2,
                 'total_harga' => 30000,
                 'id_customer' => '3',
-                // 'nama_customer' => 'san huang',
+                'tukar_poin' => true,
             ],
         ]);
     }

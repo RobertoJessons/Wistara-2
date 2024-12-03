@@ -10,6 +10,7 @@ use App\Http\Controllers\StokController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\TransaksiPenjualanController;
 use App\Http\Controllers\LaporanController;
+use App\Http\Controllers\LaporanPembelianController;
 use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\UserController;
@@ -62,6 +63,8 @@ Route::resource('transaksiPenjualan', TransaksiPenjualanController::class);
 Route::resource('supplier', SupplierController::class);
 Route::get('/laporan', [LaporanController::class, 'index'])->name('laporan.index');
 Route::get('/laporan/download', [LaporanController::class, 'download'])->name('laporan.download');
+Route::get('/laporan-pembelian', [LaporanPembelianController::class, 'index'])->name('laporan.pembelian.index');
+Route::get('/laporan-pembelian/download', [LaporanPembelianController::class, 'download'])->name('laporan.pembelian.download');
 // Rute untuk halaman penukaran poin
 Route::get('/transaksiPenjualan/poin', [TransaksiPenjualanController::class, 'poin'])->name('transaksiPenjualan.poin');
 

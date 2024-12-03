@@ -50,11 +50,14 @@ class TransaksiPenjualanController extends Controller
         // Ambil data transaksi utama
         $nomorTransaksi = $request->nomor_transaksi_penjualan;
         $tanggalTransaksi = $request->tanggal_transaksi;
-        $idCustomer = $request->id_customer; // Menyimpan id_customer
+        $idCustomer = $request->id_customer;
     
         // Ambil data customer untuk pengecekan poin
         $customer = Customer::find($idCustomer);
         $poinCustomer = $customer->poin;
+    
+        // Ambil status tukar poin
+        $tukarPoin = $request->has('tukar_poin') && $request->tukar_poin == 1;
     
         // Loop untuk setiap produk yang dipilih
         foreach ($request->id_produk as $index => $idProduk) {
@@ -62,45 +65,40 @@ class TransaksiPenjualanController extends Controller
             $totalHarga = $request->total_harga[$index];
             $poinDibutuhkan = $totalHarga / 1000; // Rumus pengurangan poin
     
-            if ($request->tukar_poin) {
+            if ($tukarPoin) {
                 // Jika tukar poin dicentang, cek apakah poin cukup
                 if ($poinCustomer < $poinDibutuhkan) {
-                    // Jika poin tidak cukup, beri pesan error dan batal simpan transaksi
                     return redirect()->back()->with('error', 'Poin Anda tidak cukup untuk menutupi transaksi ini.')->withInput();
                 }
-                
-                // Jika poin cukup, kurangi poin customer
+                // Kurangi poin customer
                 $customer->poin -= $poinDibutuhkan;
-                $customer->save(); // Simpan perubahan poin customer
+                $customer->save();
             }
     
-            // Menambahkan transaksi penjualan hanya jika poin cukup
-            if (!$request->tukar_poin || ($request->tukar_poin && $poinCustomer >= $poinDibutuhkan)) {
-                TransaksiPenjualan::create([
-                    'nomor_transaksi_penjualan' => $nomorTransaksi,
-                    'tanggal_transaksi' => $tanggalTransaksi,
-                    'id_produk' => $idProduk,
-                    'nama_produk' => $request->nama_produk[$index],
-                    'harga' => $request->harga[$index],
-                    'jumlah_produk' => $request->jumlah_produk[$index],
-                    'total_harga' => $totalHarga,
-                    'id_customer' => $idCustomer, // Menambahkan id_customer ke transaksi
-                ]);
-            } else {
-                // Jika tukar poin tidak cukup, kita tidak melanjutkan transaksi
-                return redirect()->back()->with('error', 'Poin Anda tidak cukup untuk transaksi ini.')->withInput();
-            }
+            // Menambahkan transaksi penjualan
+            TransaksiPenjualan::create([
+                'nomor_transaksi_penjualan' => $nomorTransaksi,
+                'tanggal_transaksi' => $tanggalTransaksi,
+                'id_produk' => $idProduk,
+                'nama_produk' => $request->nama_produk[$index],
+                'harga' => $request->harga[$index],
+                'jumlah_produk' => $request->jumlah_produk[$index],
+                'total_harga' => $totalHarga,
+                'id_customer' => $idCustomer,
+                'tukar_poin' => $tukarPoin,  // Menyimpan nilai boolean
+            ]);
     
-            // Jika tidak tukar poin, tambahkan poin
-            if (!$request->tukar_poin) {
+            // Jika tidak tukar poin, tambahkan poin customer
+            if (!$tukarPoin) {
                 $poin = max($totalHarga * 0.001, 0); // Poin tidak bisa negatif
-                $customer->poin += $poin; // Tambah poin
-                $customer->save(); // Simpan perubahan
+                $customer->poin += $poin;
+                $customer->save();
             }
         }
     
         return redirect()->route('transaksiPenjualan.index')->with('success', 'Transaksi berhasil ditambahkan.');
     }
+    
     
     
  

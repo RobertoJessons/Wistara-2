@@ -22,6 +22,7 @@ class TransaksiPenjualan extends Model
         'jumlah_produk',
         'total_harga',
         'id_customer', // Menambahkan id_customer pada fillable
+        'tukar_poin',
     ];
 
     public $timestamps = false; // Nonaktifkan timestamps jika tidak digunakan

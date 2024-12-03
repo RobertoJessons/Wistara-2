@@ -48,7 +48,12 @@
                 </div>
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                     <x-nav-link :href="route('laporan.index')" :active="request()->routeIs('laporan.index')">
-                        {{ __('Laporan') }}
+                        {{ __('Laporan Penjualan') }}
+                    </x-nav-link>
+                </div>
+                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                    <x-nav-link :href="route('laporan.pembelian.index')" :active="request()->routeIs('laporan.pembelian.index')">
+                        {{ __('Laporan Pembelian') }}
                     </x-nav-link>
                 </div>
             </div>
